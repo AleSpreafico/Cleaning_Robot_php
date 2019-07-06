@@ -35,45 +35,45 @@ class MyQCleaningRobot extends RobotBasicMovements
         foreach ($this->commands as $command) {
             switch ($command) {
                 case 'TL':
-                    echo "\n\nExecuting Turn Left\n";
+                    echo "\nExecuting Turn Left\n";
                     $this::turnLeft();
                     break;
                 case 'TR':
-                    echo "\n\nExecuting Turn Right\n";
+                    echo "\nExecuting Turn Right\n";
                     $this::turnRight();
                     break;
                 case 'A':
                 // TODO: Validation HERE
-                    echo "\n\nExecuting Advance\n";
+                    echo "\nExecuting Advance\n";
                     $this::advance();
                     $this::updateVisited();
                     break;
                 case 'B':
-                    echo "\n\nExecuting Go Back\n";
+                    echo "\nExecuting Go Back\n";
                     $this::back();
                     $this::updateVisited();
                     break;
                 case 'C':
-                    echo "\n\nExecuting Clean\n";
+                    echo "\nExecuting Clean\n";
                     $this::clean();
                     break;
             }
         }
 
-        $this::sayGoodBye();
+        // $this::sayGoodBye();
 
-        $result = [
-            'visited' => $this->visited,
-            'cleaned' => $this->cleaned,
-            'final' => $this->current,
-            'battery' => $this->battery
-        ];
+        // $result = [
+        //     'visited' => $this->visited,
+        //     'cleaned' => $this->cleaned,
+        //     'final' => $this->current,
+        //     'battery' => $this->battery
+        // ];
 
-        // echo json_encode($result);
-        // file_put_contents($this->output, json_encode($result, JSON_PRETTY_PRINT));
-        $fp = fopen($this->output, 'w');
-        fwrite($fp, json_encode($result, JSON_PRETTY_PRINT));
-        fclose($fp);
+        // $fp = fopen($this->output, 'w');
+        // fwrite($fp, json_encode($result, JSON_PRETTY_PRINT));
+        // fclose($fp);
+
+        $this::powerOff();
     }
 
     public function updateVisited()
@@ -83,11 +83,6 @@ class MyQCleaningRobot extends RobotBasicMovements
             'X' => $this->current['X'],
             'Y' => $this->current['Y']
         ]);
-    }
-
-    public function showVisited()
-    {
-        echo json_encode($this->visited);
     }
 
     public function clean()
@@ -101,5 +96,27 @@ class MyQCleaningRobot extends RobotBasicMovements
         ]);
     }
 
+    public function powerOff($err=null)
+    {
+        // foreach ($this->visited as $key => $coordinates) {
+        //     # code...
+        // }
+        $result = [
+            'visited' => $this->visited,
+            'cleaned' => $this->cleaned,
+            'final' => $this->current,
+            'battery' => $this->battery
+        ];
+        
+        $fp = fopen($this->output, 'w');
+        fwrite($fp, json_encode($result, JSON_PRETTY_PRINT));
+        fclose($fp);
 
+        if ($err) {
+            die();
+        }
+
+        $this::sayGoodBye();
+        die();
+    }
 }

@@ -223,7 +223,8 @@ class RobotBasicMovements
         echo "Consuming: ${energy_consumed} units.\n";
         if ($this->battery < $energy_consumed) {
             echo "Battery Status Too Low\n";
-            return false;
+            echo "Shutting Down...\n";
+            $this::powerOff('power_error');
         }
         $this->battery -= $energy_consumed;
         echo "Remaining Battery Units: {$this->battery}\n";
