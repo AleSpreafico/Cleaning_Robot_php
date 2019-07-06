@@ -157,6 +157,35 @@ class RobotBasicMovements
 
     public function back()
     {
-        
+        echo "Check Battery Status...\n";
+        if ($this->battery < 3) {
+            echo "Battery Status Too Low\n";
+            return false;
+        }
+
+        echo "Updating Battery\n";
+        $this->battery -= 3;
+
+        echo "Updating Battery\n";
+        $this->battery -= 2;
+
+        switch ($this->current['facing']) {
+            case 'N':
+                $y_axis = $this->current['Y'] + 1;
+                $this::setPosition('Y', $y_axis);
+                break;
+            case 'S':
+                $y_axis = $this->current['Y'] - 1;
+                $this::setPosition('Y', $y_axis);
+                break;
+            case 'W':
+                $x_axis = $this->current['X'] + 1;
+                $this::setPosition('X', $x_axis);
+                break;
+            case 'E':
+                $x_axis = $this->current['X'] - 1;
+                $this::setPosition('X', $x_axis);
+                break;
+        }
     }
 }
