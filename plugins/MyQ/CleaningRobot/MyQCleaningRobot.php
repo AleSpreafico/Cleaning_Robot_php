@@ -25,7 +25,7 @@ class MyQCleaningRobot extends RobotBasicMovements
 
         echo "User Input OK!\n";
 
-        
+        $this->output = $file_output;        
     }
 
     public function start()
@@ -69,8 +69,11 @@ class MyQCleaningRobot extends RobotBasicMovements
             'battery' => $this->battery
         ];
 
-        echo json_encode($result);
-
+        // echo json_encode($result);
+        // file_put_contents($this->output, json_encode($result, JSON_PRETTY_PRINT));
+        $fp = fopen($this->output, 'w');
+        fwrite($fp, json_encode($result, JSON_PRETTY_PRINT));
+        fclose($fp);
     }
 
     public function updateVisited()
@@ -89,14 +92,7 @@ class MyQCleaningRobot extends RobotBasicMovements
 
     public function clean()
     {
-        echo "Check Battery Status...\n";
-        if ($this->battery < 5) {
-            echo "Battery Status Too Low\n";
-            return false;
-        }
-
-        echo "Updating Battery\n";
-        $this->battery -= 5;
+        $this::updateVisitedBatteryStatus(5);
 
         echo "Updating Cleaned Cells\n";
         array_push($this->cleaned, [

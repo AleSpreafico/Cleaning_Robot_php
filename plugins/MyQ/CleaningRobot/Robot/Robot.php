@@ -71,14 +71,7 @@ class RobotBasicMovements
 
     public function turnLeft()
     {
-        echo "Check Battery Status...\n";
-        if ($this->battery < 1) {
-            echo "Battery Status Too Low\n";
-            return false;
-        }
-
-        echo "Updating Battery\n";
-        $this->battery -= 1;
+        $this::updateVisitedBatteryStatus(1);
 
         $index = array_search($this->current['facing'], $this->control);
 
@@ -97,14 +90,7 @@ class RobotBasicMovements
 
     public function turnRight()
     {
-        echo "Check Battery Status...\n";
-        if ($this->battery < 1) {
-            echo "Battery Status Too Low\n";
-            return false;
-        }
-
-        echo "Updating Battery\n";
-        $this->battery -= 1;
+        $this::updateVisitedBatteryStatus(1);
 
         $index = array_search($this->current['facing'], $this->control);
 
@@ -123,15 +109,6 @@ class RobotBasicMovements
 
     public function advance()
     {
-        echo "Check Battery Status...\n";
-        if ($this->battery < 2) {
-            echo "Battery Status Too Low\n";
-            return false;
-        }
-
-        echo "Updating Battery\n";
-        $this->battery -= 2;
-
         switch ($this->current['facing']) {
             case 'N':
                 $y_axis = $this->current['Y'] - 1;
@@ -167,6 +144,7 @@ class RobotBasicMovements
                 }
                 break;
         }
+        $this::updateVisitedBatteryStatus(2);
 
         echo "Advanced\n";
 
@@ -175,14 +153,7 @@ class RobotBasicMovements
 
     public function back()
     {
-        echo "Check Battery Status...\n";
-        if ($this->battery < 3) {
-            echo "Battery Status Too Low\n";
-            return false;
-        }
-
-        echo "Updating Battery\n";
-        $this->battery -= 3;
+        $this::updateVisitedBatteryStatus(3);
 
         switch ($this->current['facing']) {
             case 'N':
@@ -217,7 +188,8 @@ class RobotBasicMovements
         foreach ($back_off_commands as $key => $commands) {
 
             $current_location = $this::getInitialPosition($this->current);
-            echo "\n\nBack Off Strategie sequence: ${key}\n\n";
+            $number_of_sequence = $key+1;
+            echo "\n\nBack Off Strategie sequence: n${number_of_sequence}\n\n";
 
             foreach ($commands as $command) {
                 switch ($command) {
@@ -243,5 +215,18 @@ class RobotBasicMovements
             }
             
         }
+    }
+
+    public function updateVisitedBatteryStatus($energy_consumed)
+    {
+        echo "Check Battery Status...\n";
+        echo "Consuming: ${energy_consumed} units.\n";
+        if ($this->battery < $energy_consumed) {
+            echo "Battery Status Too Low\n";
+            return false;
+        }
+        $this->battery -= $energy_consumed;
+        echo "Remaining Battery Units: {$this->battery}\n";
+        echo "Updating Battery\n";
     }
 }
