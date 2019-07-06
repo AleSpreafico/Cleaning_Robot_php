@@ -30,24 +30,74 @@ class MyQCleaningRobot extends RobotBasicMovements
 
     public function start()
     {
-        $this::updateVisited($this->current);
-        $this::turnLeft();
-        $this::advance();
-        echo json_encode($this->commands);
+        $this::updateVisited();
+
+        foreach ($this->commands as $command) {
+            switch ($command) {
+                case 'TL':
+                    $this::turnLeft();
+                    break;
+                case 'TR':
+                    $this::turnRight();
+                    break;
+                case 'A':
+                // TODO: Validation HERE
+                    $this::advance();
+                    $this::updateVisited();
+                    break;
+                case 'B':
+                    $this::back();
+                    $this::updateVisited();
+                    break;
+                case 'C':
+                    $this::clean();
+                    break;
+            }
+        }
+
+        $this::sayGoodBye();
+
+        $result = [
+            'visited' => $this->visited,
+            'cleaned' => $this->cleaned,
+            'final' => $this->current,
+            'battery' => $this->battery
+        ];
+
+        echo json_encode($result);
+
     }
 
-    public function updateVisited($current)
+    public function updateVisited()
     {
         echo "Updating Visited Cells\n";
         array_push($this->visited, [
-            'X' => $current['X'],
-            'Y' => $current['Y']
+            'X' => $this->current['X'],
+            'Y' => $this->current['Y']
         ]);
     }
 
     public function showVisited()
     {
         echo json_encode($this->visited);
+    }
+
+    public function clean()
+    {
+        echo "Check Battery Status...\n";
+        if ($this->battery < 5) {
+            echo "Battery Status Too Low\n";
+            return false;
+        }
+
+        echo "Updating Battery\n";
+        $this->battery -= 5;
+
+        echo "Updating Cleaned Cells\n";
+        array_push($this->cleaned, [
+            'X' => $this->current['X'],
+            'Y' => $this->current['Y']
+        ]);
     }
 
 

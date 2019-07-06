@@ -4,7 +4,6 @@ namespace Plugins\MyQ\CleaningRobot\Robot;
 
 class RobotBasicMovements
 {
-
     public $map;
     public $current;
     public $commands;
@@ -165,10 +164,7 @@ class RobotBasicMovements
 
         echo "Updating Battery\n";
         $this->battery -= 3;
-
-        echo "Updating Battery\n";
-        $this->battery -= 2;
-
+        
         switch ($this->current['facing']) {
             case 'N':
                 $y_axis = $this->current['Y'] + 1;

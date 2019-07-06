@@ -19,7 +19,6 @@ $json = json_decode($json_input, true);
 
 $user_cleaning_robot = new MyQCleaningRobot($json, $output);
 $user_cleaning_robot->start();
-$user_cleaning_robot->sayGoodBye();
 
 
 // var_dump($json);
