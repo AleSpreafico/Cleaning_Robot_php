@@ -135,23 +135,42 @@ class RobotBasicMovements
         switch ($this->current['facing']) {
             case 'N':
                 $y_axis = $this->current['Y'] - 1;
-                $this::setPosition('Y', $y_axis);
+                if ( isset($this->map[$y_axis]) && $this->map[$y_axis] != 'C' ) {                    
+                    $this::setPosition('Y', $y_axis);
+                } else {
+                    $this::backOffStrategy();
+                }
+                
                 break;
             case 'S':
                 $y_axis = $this->current['Y'] + 1;
-                $this::setPosition('Y', $y_axis);
+                if (($this->map[$y_axis] != null)||($this->map[$y_axis] != 'C')) {                    
+                    $this::setPosition('Y', $y_axis);
+                } else {
+                    $this::backOffStrategy();
+                }
                 break;
             case 'W':
                 $x_axis = $this->current['X'] - 1;
-                $this::setPosition('X', $x_axis);
+                if (($this->map[$x_axis] != null)||($this->map[$x_axis] != 'C')) {                    
+                    $this::setPosition('X', $x_axis);
+                } else {
+                    $this::backOffStrategy();
+                }
                 break;
             case 'E':
                 $x_axis = $this->current['X'] + 1;
-                $this::setPosition('X', $x_axis);
+                if (($this->map[$x_axis] != null)||($this->map[$x_axis] != 'C')) {                    
+                    $this::setPosition('X', $x_axis);
+                } else {
+                    $this::backOffStrategy();
+                }
                 break;
         }
 
-        echo json_encode($this->current)."\n";
+        echo "Advanced\n";
+
+        // echo json_encode($this->current)."\n";
     }
 
     public function back()
@@ -164,7 +183,7 @@ class RobotBasicMovements
 
         echo "Updating Battery\n";
         $this->battery -= 3;
-        
+
         switch ($this->current['facing']) {
             case 'N':
                 $y_axis = $this->current['Y'] + 1;
@@ -182,6 +201,47 @@ class RobotBasicMovements
                 $x_axis = $this->current['X'] - 1;
                 $this::setPosition('X', $x_axis);
                 break;
+        }
+    }
+
+    public function backOffStrategy()
+    {
+        $back_off_commands = [
+            ['TR','A','TL'],
+            ['TR','A','TR'],
+            ['TR','A','TR'],
+            ['TR','TB','TR','A'],
+            ['TL','TL','A']
+        ];
+
+        foreach ($back_off_commands as $key => $commands) {
+
+            $current_location = $this::getInitialPosition($this->current);
+            echo "\n\nBack Off Strategie sequence: ${key}\n\n";
+
+            foreach ($commands as $command) {
+                switch ($command) {
+                    case 'TL':
+                        $this::turnLeft();
+                        break;
+                    case 'TR':
+                        $this::turnRight();
+                        break;
+                    case 'A':
+                    // TODO: Validation HERE
+                        $this::advance();
+                        $this::updateVisited();
+                        break;
+                    case 'B':
+                        $this::back();
+                        $this::updateVisited();
+                        break;
+                }
+            }
+            if ($current_location != $this::getInitialPosition($this->current)) {
+                break;
+            }
+            
         }
     }
 }

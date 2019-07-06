@@ -35,21 +35,26 @@ class MyQCleaningRobot extends RobotBasicMovements
         foreach ($this->commands as $command) {
             switch ($command) {
                 case 'TL':
+                    echo "\n\nExecuting Turn Left\n";
                     $this::turnLeft();
                     break;
                 case 'TR':
+                    echo "\n\nExecuting Turn Right\n";
                     $this::turnRight();
                     break;
                 case 'A':
                 // TODO: Validation HERE
+                    echo "\n\nExecuting Advance\n";
                     $this::advance();
                     $this::updateVisited();
                     break;
                 case 'B':
+                    echo "\n\nExecuting Go Back\n";
                     $this::back();
                     $this::updateVisited();
                     break;
                 case 'C':
+                    echo "\n\nExecuting Clean\n";
                     $this::clean();
                     break;
             }
