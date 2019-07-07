@@ -111,8 +111,9 @@ class RobotBasicMovements
     {
         switch ($this->current['facing']) {
             case 'N':
+                $x_axis = $this->current['X'];
                 $y_axis = $this->current['Y'] - 1;
-                if ( isset($this->map[$y_axis]) && $this->map[$y_axis] != 'C' ) {                    
+                if ( isset($this->map[$y_axis][$x_axis]) && $this->map[$y_axis][$x_axis] != 'C' ) {                    
                     $this::setPosition('Y', $y_axis);
                 } else {
                     $this::backOffStrategy();
@@ -120,8 +121,9 @@ class RobotBasicMovements
                 
                 break;
             case 'S':
+                $x_axis = $this->current['X'];
                 $y_axis = $this->current['Y'] + 1;
-                if (($this->map[$y_axis] != null)||($this->map[$y_axis] != 'C')) {                    
+                if (isset($this->map[$y_axis][$x_axis]) && $this->map[$y_axis][$x_axis] != 'C') {                   
                     $this::setPosition('Y', $y_axis);
                 } else {
                     $this::backOffStrategy();
@@ -129,7 +131,8 @@ class RobotBasicMovements
                 break;
             case 'W':
                 $x_axis = $this->current['X'] - 1;
-                if (($this->map[$x_axis] != null)||($this->map[$x_axis] != 'C')) {                    
+                $y_axis = $this->current['Y'];
+                if (isset($this->map[$y_axis][$x_axis]) && $this->map[$y_axis][$x_axis] != 'C') {                    
                     $this::setPosition('X', $x_axis);
                 } else {
                     $this::backOffStrategy();
@@ -137,7 +140,8 @@ class RobotBasicMovements
                 break;
             case 'E':
                 $x_axis = $this->current['X'] + 1;
-                if (($this->map[$x_axis] != null)||($this->map[$x_axis] != 'C')) {                    
+                $y_axis = $this->current['Y'];
+                if (isset($this->map[$y_axis][$x_axis]) && $this->map[$y_axis][$x_axis] != 'C') {                    
                     $this::setPosition('X', $x_axis);
                 } else {
                     $this::backOffStrategy();
