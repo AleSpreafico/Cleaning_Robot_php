@@ -189,7 +189,8 @@ class RobotBasicMovements
 
             $current_location = $this::getInitialPosition($this->current);
             $number_of_sequence = $key+1;
-            echo "\n\nBack Off Strategie sequence: n${number_of_sequence}\n\n";
+            echo "\n\nOoops! Obstacle Found\n";
+            echo "Initializing Back Off Strategy sequence: n${number_of_sequence}\n\n";
 
             foreach ($commands as $command) {
                 switch ($command) {

@@ -16,6 +16,7 @@ class MyQCleaningRobot extends RobotBasicMovements
     function __construct($file_input, $file_output)
     {
         // TODO remember to validate
+        ob_start();
         $this::sayHi();
         echo "Validatig User Input\n";
         $this->map = $this->getMap($file_input['map']);
@@ -59,20 +60,6 @@ class MyQCleaningRobot extends RobotBasicMovements
                     break;
             }
         }
-
-        // $this::sayGoodBye();
-
-        // $result = [
-        //     'visited' => $this->visited,
-        //     'cleaned' => $this->cleaned,
-        //     'final' => $this->current,
-        //     'battery' => $this->battery
-        // ];
-
-        // $fp = fopen($this->output, 'w');
-        // fwrite($fp, json_encode($result, JSON_PRETTY_PRINT));
-        // fclose($fp);
-
         $this::powerOff();
     }
 
@@ -98,25 +85,46 @@ class MyQCleaningRobot extends RobotBasicMovements
 
     public function powerOff($err=null)
     {
-        // foreach ($this->visited as $key => $coordinates) {
-        //     # code...
-        // }
-        $result = [
-            'visited' => $this->visited,
-            'cleaned' => $this->cleaned,
-            'final' => $this->current,
-            'battery' => $this->battery
-        ];
-        
-        $fp = fopen($this->output, 'w');
-        fwrite($fp, json_encode($result, JSON_PRETTY_PRINT));
-        fclose($fp);
+        $this::createJSON();
 
         if ($err) {
             die();
         }
 
+        $this::createLOG();
         $this::sayGoodBye();
+        ob_end_clean();
         die();
+    }
+
+    public function createJSON()
+    {
+        echo "Creating Final Values...\n";
+        $result = [
+            'visited' => array_unique($this->visited, SORT_REGULAR),
+            'cleaned' => array_unique($this->cleaned, SORT_REGULAR),
+            'final' => $this->current,
+            'battery' => $this->battery
+        ];
+
+        echo "Creating Final JSON file...\n";
+        $fp = fopen($this->output, 'w');
+
+        echo "Writing Contents...\n";
+        fwrite($fp, json_encode($result, JSON_PRETTY_PRINT));
+        fclose($fp);
+
+        return true;
+    }
+
+    public function createLOG()
+    {
+        $var = ob_get_contents();       
+
+        $fp = fopen('debug.log', 'w');
+        fwrite($fp, print_r($var, true));
+        fclose($fp);
+
+        return true;
     }
 }
