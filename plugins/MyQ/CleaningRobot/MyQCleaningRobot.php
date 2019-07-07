@@ -15,7 +15,6 @@ class MyQCleaningRobot extends RobotBasicMovements
 
     function __construct($file_input, $file_output)
     {
-        // TODO remember to validate
         ob_start();
         $this::sayHi();
         echo "Validatig User Input\n";

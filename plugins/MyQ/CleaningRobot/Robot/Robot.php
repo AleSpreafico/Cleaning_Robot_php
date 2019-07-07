@@ -136,8 +136,6 @@ class RobotBasicMovements
         $this::updateVisitedBatteryStatus(2);
 
         echo "Advanced\n";
-
-        // echo json_encode($this->current)."\n";
     }
 
     public function back()
@@ -190,7 +188,6 @@ class RobotBasicMovements
                         $this::turnRight();
                         break;
                     case 'A':
-                    // TODO: Validation HERE
                         $this::advance();
                         $this::updateVisited();
                         break;
