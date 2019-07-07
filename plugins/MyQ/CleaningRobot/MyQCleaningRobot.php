@@ -19,10 +19,10 @@ class MyQCleaningRobot extends RobotBasicMovements
         ob_start();
         $this::sayHi();
         echo "Validatig User Input\n";
-        $this->map = $this->getMap($file_input['map']);
-        $this->current = $this->getInitialPosition($file_input['start']);
-        $this->commands = $this->getInputCommands($file_input['commands']);
-        $this->battery = $this->getBatteryLevel($file_input['battery']);
+        $this->map = $file_input['map'];
+        $this->current = $file_input['start'];
+        $this->commands = $file_input['commands'];
+        $this->battery = $file_input['battery'];
 
         echo "User Input OK!\n";
 

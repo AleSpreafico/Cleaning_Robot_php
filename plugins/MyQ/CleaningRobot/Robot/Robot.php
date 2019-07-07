@@ -33,21 +33,6 @@ class RobotBasicMovements
         return $data;
     }
 
-    public function getInputCommands($commands)
-    {
-        return $commands;
-    }
-
-    public function getBatteryLevel($battery)
-    {
-        return $battery;
-    }
-
-    public function getMap($map)
-    {
-        return $map;
-    }
-
     public function setCurrentFacing($value)
     {
         echo "Updating current robot facing\n";
